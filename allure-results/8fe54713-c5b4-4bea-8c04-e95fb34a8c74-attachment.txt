@@ -1,5 +1,0 @@
-2025-12-11 11:17:55,646 | INFO | TEST | ===== START TEST: projects/duckduckgo/tests/duck_test.py::test_duck_search =====
-2025-12-11 11:17:56,596 | INFO | DuckHomePage | Open URL: https://duckduckgo.com
-2025-12-11 11:17:57,105 | INFO | DuckHomePage | Type into element: ('id', 'searchbox_input') | text='selenium python
-'
-2025-12-11 11:18:00,554 | INFO | TEST | ===== END TEST: projects/duckduckgo/tests/duck_test.py::test_duck_search =====
