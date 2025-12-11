@@ -1,0 +1,9 @@
+env: "dev"   # env mặc định nếu không truyền gì
+
+projects:
+  duckduckgo:
+    dev:
+      base_url: "https://duckduckgo.com"
+  google:
+    dev:
+      base_url: "https://www.google.com"

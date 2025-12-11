@@ -1,0 +1,31 @@
+# framework/core/base_page.py
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from framework.utils.logger import get_logger
+
+
+class BasePage:
+    def __init__(self, driver, timeout=10):
+        self.driver = driver
+        self.wait = WebDriverWait(driver, timeout)
+        # Logger theo tên class page, ví dụ: DuckHomePage, GoogleHomePage
+        self.logger = get_logger(self.__class__.__name__)
+
+    def open(self, url: str):
+        self.logger.info(f"Open URL: {url}")
+        self.driver.get(url)
+
+    def click(self, locator):
+        self.logger.info(f"Click element: {locator}")
+        self.wait.until(EC.element_to_be_clickable(locator)).click()
+
+    def type(self, locator, text: str):
+        self.logger.info(f"Type into element: {locator} | text='{text}'")
+        element = self.wait.until(EC.visibility_of_element_located(locator))
+        element.clear()
+        element.send_keys(text)
+
+    def is_visible(self, locator):
+        self.logger.info(f"Check visible: {locator}")
+        return self.wait.until(EC.visibility_of_element_located(locator))
+
