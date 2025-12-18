@@ -6,7 +6,7 @@ def test_duck_search(driver, base_url):
     page.open_home(base_url)
     page.search("selenium python")
 
-    time.sleep(3)  # chỉ để bạn nhìn, sau này bỏ
+    #time.sleep(3)  # chỉ để bạn nhìn, sau này bỏ
 
     assert "duckduckgo" in driver.title.lower()
     #assert False
