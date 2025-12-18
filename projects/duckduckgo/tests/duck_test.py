@@ -8,8 +8,8 @@ def test_duck_search(driver, base_url):
 
     time.sleep(3)  # chỉ để bạn nhìn, sau này bỏ
 
-    #assert "duckduckgo" in driver.title.lower()
-    assert False
+    assert "duckduckgo" in driver.title.lower()
+    #assert False
 
 
 
