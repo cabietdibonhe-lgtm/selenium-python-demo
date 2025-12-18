@@ -17,11 +17,12 @@ def pytest_addoption(parser):
         help="Tên project (duckduckgo, google, ...)",
     )
 
+from drivers.driver_factory import create_driver
+
+
 @pytest.fixture
-def driver(request):
-    browser = request.config.getoption("--browser")
-    headless = request.config.getoption("--headless")
-    driver = get_driver(browser=browser, headless=headless)
+def driver():
+    driver = create_driver()
     yield driver
     driver.quit()
 
