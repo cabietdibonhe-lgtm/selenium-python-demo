@@ -18,7 +18,7 @@ def create_driver():
 
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=options)
-    driver.implicitly_wait(5)
+    #driver.implicitly_wait(5) can cause flaky tests, hard to debug and slowdown the test
     return driver
 
 
