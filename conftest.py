@@ -1,8 +1,9 @@
 import pytest
 import allure
+from pathlib import Path
 
 from framework.utils.config_loader import get_project_base_url
-from framework.core.driver_factory import get_driver
+#from framework.core.driver_factory import get_driver
 from framework.utils.screenshot import take_screenshot
 from framework.utils.logger import get_logger
 
@@ -35,28 +36,19 @@ def base_url(request):
 
 from framework.utils.screenshot import take_screenshot
 
+
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):
     outcome = yield
     rep = outcome.get_result()
 
-    # Chỉ xử lý phase "call"
     if rep.when == "call" and rep.failed:
-        driver = item.funcargs.get("driver", None)
+        driver = item.funcargs.get("driver")
         if driver:
-            # Chụp screenshot
-            file_path = take_screenshot(driver, item.name)
-            print(f"\n[SCREENSHOT] Test failed, saved to: {file_path}")
+            png = driver.get_screenshot_as_png()
+            allure.attach(png, name="screenshot", attachment_type=allure.attachment_type.PNG)
 
-            # Attach screenshot vào Allure
-            try:
-                allure.attach.file(
-                    str(file_path),
-                    name=item.name,
-                    attachment_type=allure.attachment_type.PNG,
-                )
-            except Exception as e:
-                print(f"[ALLURE] Cannot attach screenshot: {e}")
+
 
 
 
@@ -72,3 +64,48 @@ def pytest_runtest_setup(item):
 def pytest_runtest_teardown(item, nextitem):
     logger = get_logger("TEST")
     logger.info(f"===== END TEST: {item.nodeid} =====")
+
+
+
+
+def pytest_configure(config):
+    # chỉ tạo khi bạn chạy có --alluredir
+    alluredir = config.getoption("--alluredir", default=None)
+    if alluredir:
+        env = config.getoption("--env")
+        project = config.getoption("--project")
+        browser = config.getoption("--browser")
+
+        p = Path(alluredir)
+        p.mkdir(parents=True, exist_ok=True)
+
+        (p / "environment.properties").write_text(
+            f"env={env}\nproject={project}\nbrowser={browser}\n",
+            encoding="utf-8"
+        )
+
+
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    outcome = yield
+    rep = outcome.get_result()
+
+    if rep.when == "call" and rep.failed:
+        driver = item.funcargs.get("driver")
+        if driver:
+            # Screenshot
+            png = driver.get_screenshot_as_png()
+            allure.attach(png, name="screenshot", attachment_type=allure.attachment_type.PNG)
+
+            # Current URL
+            try:
+                allure.attach(driver.current_url, name="url", attachment_type=allure.attachment_type.TEXT)
+            except Exception:
+                pass
+
+            # Page source (HTML)
+            try:
+                allure.attach(driver.page_source, name="page_source", attachment_type=allure.attachment_type.HTML)
+            except Exception:
+                pass
+

@@ -37,5 +37,14 @@ class BasePage:
 
     def get_title(self) -> str:
         return self.driver.title
+    
 
+    def wait_url_contains(self, text: str):
+        self.logger.info(f"Wait URL contains: {text}")
+        self.wait.until(lambda d: text in d.current_url)
+        return self
+
+    def wait_present(self, locator):
+        self.logger.info(f"Wait present: {locator}")
+        return self.wait.until(EC.presence_of_element_located(locator))
 
