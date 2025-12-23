@@ -88,27 +88,40 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 
 from framework.core.base_page import BasePage
+from selenium.webdriver.common.keys import Keys
+
 
 
 class DuckHomePage(BasePage):
     SEARCH_INPUT = (By.ID, "searchbox_input")
-    RESULT = (By.CSS_SELECTOR, "[data-testid='result']")
+
+    RESULTS_ANY = (
+        By.CSS_SELECTOR,
+        "article[data-testid='result'], #links article, #links .result"
+    )
 
     def open_home(self, base_url: str):
         self.open(base_url)
         return self
 
     def search(self, text: str):
-        # Enter để submit
-        self.type(self.SEARCH_INPUT, text + "\n")
+        self.type(self.SEARCH_INPUT, text + Keys.ENTER)
         return self
 
-    def has_results(self, timeout: int = 10) -> bool:
+
+    def has_results(self, timeout: int = 15) -> bool:
         try:
-            # Chờ ít nhất 1 result xuất hiện
-            self.wait.until(EC.presence_of_element_located(self.RESULT))
+            self.wait.until(
+                EC.presence_of_element_located(self.RESULTS_ANY)
+            )
             return True
         except TimeoutException:
             return False
+
+
+
+
+
+
 
 
