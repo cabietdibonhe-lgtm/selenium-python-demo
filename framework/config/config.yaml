@@ -2,11 +2,12 @@ env: "dev"   # env mặc định nếu không truyền gì
 
 
 projects:
-  hello:
-    dev:
-      base_url: "http://127.0.0.1:8000/index.html"
-    ci:
-      base_url: "http://127.0.0.1:8000/index.html"
+hello:
+  ci:
+    base_url: "http://127.0.0.1:8000/index.html"
+  dev:
+    base_url: "http://127.0.0.1:8000/index.html"
+
 
   #google:
     #dev:
