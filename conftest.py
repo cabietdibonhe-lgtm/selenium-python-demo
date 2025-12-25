@@ -14,8 +14,8 @@ def pytest_addoption(parser):
     parser.addoption(
         "--project",
         action="store",
-        default="duckduckgo",
-        help="Tên project (duckduckgo, google, ...)",
+        default="hello",
+        help="Tên project (hello, duckduckgo, google, ...)",
     )
 
 from drivers.driver_factory import create_driver
