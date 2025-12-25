@@ -1,5 +1,5 @@
 import pytest
-from projects.hello.pages.hello_page import HelloPage
+from projects.hello.page.hello_page import HelloPage
 
 
 @pytest.mark.smoke
