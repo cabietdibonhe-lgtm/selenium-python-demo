@@ -1,5 +1,4 @@
-env: "dev"   # env mặc định nếu không truyền gì
-
+env: "dev"
 
 projects:
   hello:
@@ -8,7 +7,3 @@ projects:
     dev:
       base_url: "http://127.0.0.1:8000/index.html"
 
-
-  #google:
-    #dev:
-      #base_url: "https://www.google.com"
